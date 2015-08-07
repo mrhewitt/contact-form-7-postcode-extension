@@ -1,5 +1,5 @@
 === Contact Form 7 Postcode Extension ===
-Contributors: mrhewitt
+Contributors: Mark Hewitt
 Tags: Contact Form 7, Contact, Contact Form, postcode
 Requires at least: 4.0
 Tested up to: 4.2.4
@@ -12,9 +12,12 @@ a single text field that is connected to the http://www.postcodesoftware.net API
 
 = WHAT DOES IT DO? =
 
+Enables the population of an address by looking up the postal code on http://www.postcodesoftware.net
 
 = HOW TO USE IT =
 
+Simply add a postcode short-code to your form. Ensure you have installed it correctly and it will automatically allow you to
+lookup UK address based on their postcode.
 
 = INCLUDED SHORTCODES =
 
@@ -38,6 +41,7 @@ On first installation of the software create a .PHP file called account.php with
 <?php 
 $POSTCODE_ACCOUNT = '[accountname]';
 $POSTCODE_PASSWORD = '[password]';
+?>
 
 If this file does not exist it will use the default test account and be limited to using only LS postcodes.
 

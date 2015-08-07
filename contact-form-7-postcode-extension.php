@@ -3,7 +3,7 @@
 /*
 Plugin Name: Contact Form 7 - Postcode Extension
 Plugin URI: https://github.com/mrhewitt/contact-form-7-postcode-extension
-Description: Provides a postcode field that provides an address lookup against the http://www.postcodesoftware.net SDK.  Requires Contact Form 7
+Description: Provides a postcode field that provides an address lookup against the http://www.postcodesoftware.co.uk SDK.  Requires Contact Form 7
 Version: 1.0
 Author: Mark Hewitt
 Author URI: http://www.markhewitt.co.za
@@ -36,44 +36,33 @@ function wpcf7_postcode_init(){
 
 
 function wpcf7_postcode_add_shortcode_postcode() {
-	wpcf7_add_shortcode(
-		array( 'postcode'),
-		'wpcf7_postcode_shortcode_handler', true );
+	wpcf7_add_shortcode( array( 'postcode'), 'wpcf7_postcode_shortcode_handler', true );
 }
 function wpcf7_postcode_shortcode_handler( $tag ) {
 	$tag = new WPCF7_Shortcode( $tag );
 
-	if ( empty( $tag->name ) )
+	if ( empty( $tag->name ) ) {
 		return '';
-
+	}
+	
 	$validation_error = wpcf7_get_validation_error( $tag->name );
-
 	$class = wpcf7_form_controls_class( $tag->type, 'wpcf7-text' );
 
-	if ( $validation_error )
+	if ( $validation_error ) {
 		$class .= ' wpcf7-not-valid';
-
+	}
+	
 	$atts = array();
 
 	$atts['class'] = $tag->get_class_option( $class );
 	$atts['id'] = $tag->get_id_option();
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'int', true );
 
-	if ( $tag->is_required() )
+	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';
-
-	$atts['aria-invalid'] = $validation_error ? 'true' : 'false';
-
-	$value = (string) reset( $tag->values );
-
-	if ( $tag->has_option( 'placeholder' ) || $tag->has_option( 'watermark' ) ) {
-		$atts['placeholder'] = $value;
-		$value = '';
 	}
-
-	$value = $tag->get_default_option( $value );
-	$value = wpcf7_get_hangover( $tag->name, $value );
-	$atts['value'] = $value;
+	
+	$atts['aria-invalid'] = $validation_error ? 'true' : 'false';
 
 	$atts = wpcf7_format_atts( $atts );
 
@@ -118,7 +107,7 @@ add_action( 'wp_ajax_nopriv_wpcf7_postcode_lookup', 'wpcf7_postcode_lookup' );
 
 function wpcf7_postcode_lookup() {
 	// fetch the data from the postcode SDK
-	@include_once('./account.php');
+	@include_once( dirname(__FILE__).'/account.php' );
 	if ( !isset($POSTCODE_ACCOUNT) ) {
 		$POSTCODE_ACCOUNT = 'test';
 		$POSTCODE_PASSWORD = 'test';
@@ -149,6 +138,11 @@ function wpcf7_postcode_lookup() {
 		}
 	}
 	
+	// ensure there is a address2 in case this is empty from the API, just to simplyfy the js code
+	if ( !isset($address['Address2']) ) {
+		$address['Address2'] = '';
+	}
+	
 	// give out API consumer a JSON block in response
 	echo json_encode($address);
 	wp_die();
@@ -164,29 +158,9 @@ function wpcf7_postcode_validation_filter( $result, $tag ) {
 		? trim( wp_unslash( strtr( (string) $_POST[$name], "\n", " " ) ) )
 		: '';
 
-	if ( 'postcode' == $tag->basetype ) {
-		if ( $tag->is_required() && '' == $value ) {
-			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		}
-	}
-
-	if ( ! empty( $value ) ) {
-		$maxlength = $tag->get_maxlength_option();
-		$minlength = $tag->get_minlength_option();
-
-		if ( $maxlength && $minlength && $maxlength < $minlength ) {
-			$maxlength = $minlength = null;
-		}
-
-		$code_units = wpcf7_count_code_units( $value );
-
-		if ( false !== $code_units ) {
-			if ( $maxlength && $maxlength < $code_units ) {
-				$result->invalidate( $tag, wpcf7_get_message( 'invalid_too_long' ) );
-			} elseif ( $minlength && $code_units < $minlength ) {
-				$result->invalidate( $tag, wpcf7_get_message( 'invalid_too_short' ) );
-			}
-		}
+	// for now postcode is always required
+	if ( /*$tag->is_required()*/true && '' == $value ) {
+		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
 	}
 
 	return $result;
@@ -200,7 +174,6 @@ if ( is_admin() ) {
 }
 
 function wpcf7_postcode_add_tag_generator_postcode() {
-
 	$tag_generator = WPCF7_TagGenerator::get_instance();
 	$tag_generator->add( 'postcode', __( 'postcode', 'contact-form-7' ),
 		'wpcf7_postcode_tag_generator_postcode' );

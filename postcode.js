@@ -25,7 +25,7 @@ function wp7cf_postcode_lookup(self) {
 			select.append('<option value="" selected>--</option>');
 			for ( var i = 0; i < response.PremiseData.length; i++ ) {
 				if ( response.PremiseData[i] != "" ) {
-					select.append('<option value="'+response.PremiseData[i]+' '+response.Address1+'">'+response.PremiseData[i]+" "+response.Address1+", "+response.Address2+", "+response.Town+'</option>');
+					select.append('<option value="'+response.PremiseData[i]+' '+response.Address1+'">'+response.PremiseData[i]+" "+response.Address1+", "+(response.Address2==""?"":response.Address2+", ")+response.Town+'</option>');
 				}
 			}
 			wrap.find('.wp7cf-ostcode-choice-wrap').show();
@@ -36,7 +36,7 @@ function wp7cf_postcode_lookup(self) {
 			wrap.find('input[name=wp7cf_postcode_addr2]').val(response.Address2);
 			wrap.find('input[name=wp7cf_postcode_town]').val(response.Town);
 			wrap.find('input[name=wp7cf_postcode_county]').val(response.County);
-			wrap.find('input[type=hidden]').val( response.Address1+"\n"+response.Address2+"\n"+response.Town+"\n"+response.County+"\n"+response.Postcode);
+			wrap.find('input[type=hidden]').val( response.Address1+"\n"+(response.Address2==""?"":response.Address2+"\n")+response.Town+"\n"+response.County+"\n"+response.Postcode);
 
 		} else {
 			wrap.find('.wpcf7-postcode-address').css({display:'none'});
