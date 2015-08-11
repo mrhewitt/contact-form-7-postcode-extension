@@ -3,7 +3,7 @@
 /*
 Plugin Name: Contact Form 7 - Postcode Extension
 Plugin URI: https://github.com/mrhewitt/contact-form-7-postcode-extension
-Description: Provides a postcode field that provides an address lookup against the http://www.postcodesoftware.co.uk SDK.  Requires Contact Form 7
+Description: Provides a postcode field that provides an address lookup against the http://www.postcodesoftware.net SDK.  Requires Contact Form 7
 Version: 1.0
 Author: Mark Hewitt
 Author URI: http://www.markhewitt.co.za
@@ -71,7 +71,7 @@ function wpcf7_postcode_shortcode_handler( $tag ) {
 			<input type="hidden" name="'.sanitize_html_class($tag->name).'" />
 			<span style="display:block">Postcode*</span>
 			<input type="text" name="wp7cf_postcode_code" maxlength="8" style="text-transform:uppercase;width:128px;margin-right:6px" />
-			<button onclick="wp7cf_postcode_lookup(jQuery(this));return false;" style="display:inline-block" disabled class="btn btn-link">Lookup</button>
+			<button onclick="wp7cf_postcode_lookup(jQuery(this));return false;" style="display:inline-block;font-weight:bold;padding-bottom:2px;position: relative;top: -4px;left: -4px;" disabled class="">Lookup</button>
 			<img class="ajax-loader" src="'.wpcf7_ajax_loader().'" alt="Checking..." style="display: none;">
 			<span class="wpcf7-postcode-address" style="display:none">
 				<span style="display:block" class="wp7cf-ostcode-choice-wrap">
@@ -84,9 +84,9 @@ function wpcf7_postcode_shortcode_handler( $tag ) {
 					<span style="display:block">Address Line 2</span>
 					<span style="display:block"><input type="text" name="wp7cf_postcode_addr2" readonly /></span>
 					<span style="display:block">Town</span>
-					<span style="display:block"><input type="text" name="wp7cf_postcode_town" readonly /></span>
+					<span style="display:block"><input type="text" name="wp7cf_postcode_town" readonly /></span>' . /*
 					<span style="display:block">County</span>
-					<span style="display:block"><input type="text" name="wp7cf_postcode_county" readonly /></span>
+					<span style="display:block"><input type="text" name="wp7cf_postcode_county" readonly /></span>*/ '
 				</span>
 			</span>
 		</span>',

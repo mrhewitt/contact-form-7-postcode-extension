@@ -35,8 +35,8 @@ function wp7cf_postcode_lookup(self) {
 			wrap.find('input[name=wp7cf_postcode_addr1]').val(response.Address1);
 			wrap.find('input[name=wp7cf_postcode_addr2]').val(response.Address2);
 			wrap.find('input[name=wp7cf_postcode_town]').val(response.Town);
-			wrap.find('input[name=wp7cf_postcode_county]').val(response.County);
-			wrap.find('input[type=hidden]').val( response.Address1+"\n"+(response.Address2==""?"":response.Address2+"\n")+response.Town+"\n"+response.County+"\n"+response.Postcode);
+		//	wrap.find('input[name=wp7cf_postcode_county]').val(response.County);
+			wrap.find('input[type=hidden]').val( response.Address1+"\n~"+response.Address2+"\n~"+response.Town+"\n~"/*+response.County+"\n~"*/+response.Postcode);
 
 		} else {
 			wrap.find('.wpcf7-postcode-address').css({display:'none'});
@@ -59,8 +59,8 @@ jQuery(document).ready( function() {
 								// because this field is available we know that there is a premesis available
 								var address = wrap.find('input[type=hidden]').val().split("\n");
 								address.shift();
-								wrap.find('input[name=wp7cf_postcode_addr1]').val( jQuery(this).val() );
-								wrap.find('input[type=hidden]').val( jQuery(this).val() + "\n" + address.join("\n") );
+								wrap.find('input[name=wp7cf_postcode_addr1]').val( jQuery(this).val() );		// set the form field display to address1
+								wrap.find('input[type=hidden]').val( jQuery(this).val() + "\n" + address.join("\n") );		// put new address1 back onto result
 								wrap.find('.wp7cf-postcode-address-wrap').show();	
 								wrap.find('.wp7cf-ostcode-choice-wrap').hide();
 							} else {
